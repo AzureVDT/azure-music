@@ -4,7 +4,7 @@ const PageNotFound = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex items-center justify-center w-screen h-screen overflow-hidden bg-tertiary sm:bg-white">
+        <div className="flex items-center justify-center w-screen h-screen overflow-hidden bg-tertiary sm:bg-lite">
             <div className="hidden sm:block">
                 <img
                     src="/page-not-found-bg.png"
@@ -25,7 +25,7 @@ const PageNotFound = () => {
                 <div className="flex items-center justify-center">
                     <button
                         className="flex items-center justify-center w-[200px] h-[60px] border-4 
-                    border-black rounded-[30px] bg-secondary gap-x-2"
+                    border-black rounded-[30px] bg-[#E8F5FF] gap-x-2"
                         onClick={() => navigate("/")}
                     >
                         <span>
