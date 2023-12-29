@@ -9,13 +9,13 @@ const DashboardTopBar = () => {
     const showMenu = useSelector((state: RootState) => state.search.showMenu);
     const dispatch = useDispatch();
     return (
-        <div className="flex items-center justify-between">
+        <div className="fixed flex items-center justify-between left-6 top-5">
             <div className="flex items-center flex-1 gap-x-10">
-                <Link to={"/"} className="inline-block px-[14px]">
+                <Link to={"/"} className="inline-block px-[16px]">
                     <img
                         srcSet="/logo.png 2x"
                         alt="azure-music"
-                        className="w-[48px] h-[48px] object-cover"
+                        className="object-cover w-[48px]"
                     />
                 </Link>
                 <div className="max-w-[458px] w-full">

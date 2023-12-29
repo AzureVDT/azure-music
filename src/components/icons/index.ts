@@ -5,6 +5,7 @@ import IconExplore from "./IconExplore";
 import IconSetting from "./IconSetting";
 import IconRadio from "./IconRadio";
 import IconMenu from "./IconMenu";
+import IconSlider from "./IconSlider";
 
 export {
     IconDarkMode,
@@ -14,4 +15,5 @@ export {
     IconSetting,
     IconRadio,
     IconMenu,
+    IconSlider,
 };

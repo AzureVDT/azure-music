@@ -13,11 +13,9 @@ const LayoutDashboard = () => {
         <div className="min-h-screen p-5 bg-lite">
             <Overlay isOpen={showSearch}></Overlay>
             <DashboardTopBar></DashboardTopBar>
-            <div className="flex items-start gap-x-10">
-                <DashboardSideBar></DashboardSideBar>
-                <div className="flex-1">
-                    <Outlet></Outlet>
-                </div>
+            <DashboardSideBar></DashboardSideBar>
+            <div className="px-32 py-20">
+                <Outlet></Outlet>
             </div>
         </div>
     );

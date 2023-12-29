@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import PageNotFound from "./pages/PageNotFound.tsx";
 import LayoutDashboard from "./layout/LayoutDashboard.tsx";
+import "swiper/swiper-bundle.css";
 const router = createBrowserRouter([
     {
         element: <LayoutDashboard />,

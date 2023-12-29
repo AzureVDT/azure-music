@@ -55,7 +55,7 @@ const DashboardSideBar = () => {
     return (
         <div
             className={`w-full md:w-[76px] bg-white rounded-3xl shadow-[10px_10px_20px_0px_rgba(218,_213,_213,_0.15)] 
-            px-[14px] py-10 flex-col flex-shrink-0 fixed top-20 bottom-0 md:left-5 left-0 ${
+            px-[14px] py-10 flex-col flex-shrink-0 fixed top-20 bottom-0 md:left-5 left-0 md:flex ${
                 showMenu ? "flex" : "hidden"
             }`}
         >
