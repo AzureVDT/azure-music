@@ -6,7 +6,7 @@ import IconSetting from "./IconSetting";
 import IconRadio from "./IconRadio";
 import IconMenu from "./IconMenu";
 import IconSlider from "./IconSlider";
-
+import IconChevronRight from "./IconChevronRight";
 export {
     IconDarkMode,
     IconLogout,
@@ -16,4 +16,5 @@ export {
     IconRadio,
     IconMenu,
     IconSlider,
+    IconChevronRight,
 };

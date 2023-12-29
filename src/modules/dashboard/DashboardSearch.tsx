@@ -10,7 +10,7 @@ const DashboardSearch = () => {
     return (
         <div className="relative z-50">
             <div
-                className="bg-white rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full flex items-center"
+                className="bg-white rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full flex items-center md:w-[450px]"
                 onClick={() => dispatch(setShowSearch(true))}
             >
                 <div className="flex-1 px-5">
