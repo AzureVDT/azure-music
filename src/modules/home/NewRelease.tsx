@@ -3,8 +3,9 @@ import NewReleaseTypes, {
     NewReleaseSongTypes,
 } from "../../types/newReleaseTypes";
 import formatDateTime from "../../utils/formatDateTime";
-import { IconChevronRight } from "../icons";
+import { IconChevronRight } from "../../components/icons";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     const [type, setType] = useState("all");
@@ -63,19 +64,28 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                     data.items.all
                         .slice(0, 8)
                         .map((item) => (
-                            <NewReleaseItem item={item}></NewReleaseItem>
+                            <NewReleaseItem
+                                key={uuidv4()}
+                                item={item}
+                            ></NewReleaseItem>
                         ))}
                 {type === "vPop" &&
                     data.items.vPop
                         .slice(0, 8)
                         .map((item) => (
-                            <NewReleaseItem item={item}></NewReleaseItem>
+                            <NewReleaseItem
+                                key={uuidv4()}
+                                item={item}
+                            ></NewReleaseItem>
                         ))}
                 {type === "others" &&
                     data.items.others
                         .slice(0, 8)
                         .map((item) => (
-                            <NewReleaseItem item={item}></NewReleaseItem>
+                            <NewReleaseItem
+                                key={uuidv4()}
+                                item={item}
+                            ></NewReleaseItem>
                         ))}
             </div>
         </div>
@@ -84,7 +94,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
 
 const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
     return (
-        <div key={item.encodeId} className="mb-5 hover:bg-[#ccc] px-4 py-2">
+        <div className="mb-5 hover:bg-[#ccc] px-4 py-2">
             <div className="flex items-center gap-x-5">
                 <div className="flex items-center justify-center w-16 h-16">
                     <img

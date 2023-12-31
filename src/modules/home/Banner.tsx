@@ -1,7 +1,7 @@
 import { SwiperSlide, Swiper } from "swiper/react";
 import { useNavigate } from "react-router-dom";
 import BannerTypes, { BannerItemTypes } from "../../types/bannerTypes";
-import { IconSlider } from "../icons";
+import { IconSlider } from "../../components/icons";
 const Banner = ({ data }: { data: BannerTypes }) => {
     const bannerData = data.items;
     return (
