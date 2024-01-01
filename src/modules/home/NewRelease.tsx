@@ -93,8 +93,12 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
 };
 
 const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
+    const navigate = useNavigate();
     return (
-        <div className="mb-5 hover:bg-[#ccc] px-4 py-2">
+        <div
+            className="px-4 py-2 mb-5 rounded-lg cursor-pointer hover:bg-tertiary"
+            onClick={() => navigate(item.link)}
+        >
             <div className="flex items-center gap-x-5">
                 <div className="flex items-center justify-center w-16 h-16">
                     <img
@@ -107,9 +111,19 @@ const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
                     <h4 className="text-xl font-bold leading-relaxed line-clamp-1">
                         {item.title}
                     </h4>
-                    <span className="text-sm font-medium leading-relaxed text-text3">
-                        {item.artistsNames}
-                    </span>
+                    <div className="flex flex-wrap items-center justify-center">
+                        {item.artists.map((artist) => (
+                            <span
+                                key={artist.id}
+                                onClick={() =>
+                                    navigate(`/nghe-si/${artist.link}`)
+                                }
+                                className="text-sm font-medium leading-relaxed cursor-pointer text-text3 hover:underline"
+                            >
+                                {`${artist.name},`}&nbsp;
+                            </span>
+                        ))}
+                    </div>
                     <span className="text-sm font-medium leading-relaxed text-text3">
                         {formatDateTime(item.releaseDate)}
                     </span>

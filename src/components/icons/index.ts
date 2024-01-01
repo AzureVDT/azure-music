@@ -8,6 +8,7 @@ import IconMenu from "./IconMenu";
 import IconSlider from "./IconSlider";
 import IconChevronRight from "./IconChevronRight";
 import IconPlay from "./IconPlay";
+import IconTrend from "./IconTrend";
 
 export {
     IconDarkMode,
@@ -20,4 +21,5 @@ export {
     IconSlider,
     IconChevronRight,
     IconPlay,
+    IconTrend,
 };

@@ -1,12 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/configureStore";
 import { setShowSearch } from "../../store/actions/searchSlice";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { zingmp3Api } from "../../apis/constants";
+import { v4 as uuidv4 } from "uuid";
+import { IconTrend } from "../../components/icons";
 
 const DashboardSearch = () => {
     const showSearch = useSelector(
         (state: RootState) => state.search.showSearch
     );
     const dispatch = useDispatch();
+    const [hotSearch, setHotSearch] = useState([]);
+    useEffect(() => {
+        async function fetchHotSearch() {
+            const res = await axios.get(zingmp3Api.getHotKeyApi());
+            const data = res.data.data;
+            setHotSearch(data);
+        }
+        fetchHotSearch();
+    }, []);
     return (
         <div className="relative z-50">
             <div
@@ -38,10 +52,10 @@ const DashboardSearch = () => {
                 </button>
             </div>
             {showSearch && (
-                <div className="search-results w-full lg:w-[843px] absolute top-full left-0 bg-white z-50 translate-y-5 pb-6 rounded-3xl">
+                <div className="search-results w-full lg:w-[500px] absolute top-full left-0 bg-white z-50 translate-y-5 pb-6 rounded-3xl">
                     <div className="flex items-center justify-between p-3 bg-graySoft rounded-3xl">
-                        <h4 className="pl-4 text-sm font-medium underline">
-                            See all 10,124 fundraisier
+                        <h4 className="pl-4 text-lg font-bold">
+                            Đề xuất cho bạn
                         </h4>
                         <button
                             className="flex items-center justify-center w-[72px] h-[50px] rounded-xl bg-error bg-opacity-20 text-error"
@@ -61,21 +75,25 @@ const DashboardSearch = () => {
                             </svg>
                         </button>
                     </div>
-                    <div className="p-6 pb-0">
-                        <div className="flex flex-col mb-6 gap-y-5">
+                    <div className="px-6 py-4 pt-0 pb-0">
+                        {/* <div className="flex flex-col mb-6 gap-y-5">
                             <SearchItem></SearchItem>
                             <SearchItem></SearchItem>
                             <SearchItem></SearchItem>
                             <SearchItem></SearchItem>
-                        </div>
-                        <h3 className="mb-4 text-sm font-semibold">
-                            Related searchs
-                        </h3>
+                        </div> */}
                         <div className="flex flex-col text-sm gap-y-3 text-text2">
-                            <p>
-                                <strong>education</strong> fund
-                            </p>
-                            <p>schoralship fund</p>
+                            {hotSearch.map(
+                                (item: { keyword: string; link: string }) => (
+                                    <div
+                                        key={uuidv4()}
+                                        className="flex items-center p-2 rounded-lg cursor-pointer gap-x-3 hover:text-primary hover:bg-tertiary"
+                                    >
+                                        <IconTrend></IconTrend>
+                                        <p>{item.keyword}</p>
+                                    </div>
+                                )
+                            )}
                         </div>
                     </div>
                 </div>
@@ -84,22 +102,22 @@ const DashboardSearch = () => {
     );
 };
 
-function SearchItem() {
-    return (
-        <div className="flex items-center gap-x-5">
-            <img
-                src={`https://source.unsplash.com/random`}
-                className="w-[50px] h-[50px] rounded-lg object-cover"
-                alt=""
-            />
-            <div className="flex-1 text-sm">
-                <h3 className="mb-1">
-                    <strong>Education</strong> fund for Durgham Family
-                </h3>
-                <p className="text-text3">By Durgham Family</p>
-            </div>
-        </div>
-    );
-}
+// function SearchItem() {
+//     return (
+//         <div className="flex items-center gap-x-5">
+//             <img
+//                 src={`https://source.unsplash.com/random`}
+//                 className="w-[50px] h-[50px] rounded-lg object-cover"
+//                 alt=""
+//             />
+//             <div className="flex-1 text-sm">
+//                 <h3 className="mb-1">
+//                     <strong>Education</strong> fund for Durgham Family
+//                 </h3>
+//                 <p className="text-text3">By Durgham Family</p>
+//             </div>
+//         </div>
+//     );
+// }
 
 export default DashboardSearch;

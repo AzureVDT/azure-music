@@ -6,8 +6,10 @@ import Chart, {
     Point,
 } from "chart.js/auto";
 import { IconPlay } from "../../components/icons";
+import { useNavigate } from "react-router-dom";
 
 const ZingChart = ({ data }: { data: ChartTypes }) => {
+    const navigate = useNavigate();
     const chartRef = useRef(null);
     const labels = data.chart.times
         .map((item, index) => (index % 2 === 0 ? item.hour : null))
@@ -76,11 +78,6 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                     ],
                 },
                 options: {
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                    },
                     scales: {
                         y: {
                             display: false,
@@ -105,7 +102,7 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
     if (!data) return null;
 
     return (
-        <section className="px-4 py-5 mb-20 overflow-hidden rounded-lg shadow-md bg-graySoft">
+        <section className="px-4 py-5 mb-20 overflow-hidden rounded-lg shadow-sdprimary bg-graySoft">
             <div className="flex items-center mb-5 gap-x-3">
                 <h3 className="text-3xl font-bold zing-chart-gradient">
                     #zingchart
@@ -129,12 +126,24 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                                     className="object-cover w-[60px] h-[60px] rounded-lg"
                                 />
                                 <div>
-                                    <h3 className="text-xl font-medium">
+                                    <h3 className="text-xl font-bold leading-relaxed line-clamp-1">
                                         {item.title}
                                     </h3>
-                                    <span className="text-lg font-normal">
-                                        {item.artistsNames}
-                                    </span>
+                                    <div className="flex flex-wrap items-center justify-center">
+                                        {item.artists.map((artist) => (
+                                            <span
+                                                key={artist.id}
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/nghe-si/${artist.link}`
+                                                    )
+                                                }
+                                                className="text-sm font-medium leading-relaxed cursor-pointer text-text3 hover:underline"
+                                            >
+                                                {`${artist.name},`}&nbsp;
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <span className="flex-shrink-0 ml-auto text-2xl font-bold">
