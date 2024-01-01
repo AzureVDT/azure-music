@@ -9,13 +9,19 @@ import Banner from "../modules/home/Banner";
 import NewRelease from "../modules/home/NewRelease";
 import Playlist from "../modules/home/Playlist";
 import Radio from "../modules/home/Radio";
+import ZingChart from "../modules/home/ZingChart";
 
 const DashboardPage = () => {
     const apiUrl = zingmp3Api.getHomePage();
     const dispatch = useDispatch();
     const homeData = useSelector((state: RootState) => state.music.homeData);
-    const { bannerData, newReleaseData, playlistData, homeRadioData } =
-        useSeparateHomeData(homeData);
+    const {
+        bannerData,
+        newReleaseData,
+        playlistData,
+        homeRadioData,
+        zingChart,
+    } = useSeparateHomeData(homeData);
     useEffect(() => {
         async function fetchData() {
             const res = await axios.get(apiUrl);
@@ -28,6 +34,7 @@ const DashboardPage = () => {
         <>
             <Banner data={bannerData}></Banner>
             <NewRelease data={newReleaseData}></NewRelease>
+            <ZingChart data={zingChart}></ZingChart>
             <Playlist data={playlistData}></Playlist>
             <Radio data={homeRadioData}></Radio>
         </>

@@ -1,11 +1,16 @@
 import BannerTypes from "../types/bannerTypes";
+import ChartTypes from "../types/chartTypes";
 import HomePlaylistTypes from "../types/homePlaylistTypes";
 import HomeRadioTypes from "../types/homeRadioTypes";
 import NewReleaseTypes from "../types/newReleaseTypes";
 
 const useSeparateHomeData = (
     homeData: Array<
-        BannerTypes | NewReleaseTypes | HomePlaylistTypes | HomeRadioTypes
+        | BannerTypes
+        | NewReleaseTypes
+        | HomePlaylistTypes
+        | HomeRadioTypes
+        | ChartTypes
     >
 ) => {
     const bannerData = homeData.filter(
@@ -21,9 +26,9 @@ const useSeparateHomeData = (
     const playlistData = homeData.filter(
         (item): item is HomePlaylistTypes => item.sectionType === "playlist"
     );
-    // const zingChart = homeData.filter(
-    //     (item: BannerTypes) => item.sectionType === "RTChart"
-    // )[0];
+    const zingChart = homeData.filter(
+        (item): item is ChartTypes => item.sectionType === "RTChart"
+    )[0];
     const homeRadioData = homeData.filter(
         (item): item is HomeRadioTypes => item.sectionType === "livestream"
     )[0];
@@ -32,7 +37,7 @@ const useSeparateHomeData = (
         newReleaseData,
         // newReleaseChart,
         playlistData,
-        // zingChart,
+        zingChart,
         homeRadioData,
     };
 };

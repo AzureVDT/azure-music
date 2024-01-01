@@ -104,7 +104,7 @@ const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
                     />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                    <h4 className="text-xl font-bold leading-relaxed">
+                    <h4 className="text-xl font-bold leading-relaxed line-clamp-1">
                         {item.title}
                     </h4>
                     <span className="text-sm font-medium leading-relaxed text-text3">

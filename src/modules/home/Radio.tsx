@@ -49,7 +49,7 @@ const RadioItem = ({ item }: { item: HomeRadioItemTypes }) => {
         >
             <div className="relative w-full h-full overflow-hidden border-4 rounded-full border-error">
                 <img
-                    src={item.program.thumbnail}
+                    src={item.program?.thumbnail || item.thumbnail}
                     alt=""
                     className="object-cover w-full h-full transition-transform duration-500 ease-in-out transform rounded-full hover:scale-110"
                 />
@@ -61,12 +61,19 @@ const RadioItem = ({ item }: { item: HomeRadioItemTypes }) => {
             </div>
             <div className="absolute right-[-10px] top-20">
                 <img
-                    src={item.host.thumbnail}
+                    src={item.host?.thumbnail || item.thumbnail}
                     alt=""
                     className="object-cover rounded-full w-14 h-14"
                 />
             </div>
-            <h3 className="text-lg font-medium line-clamp-1">
+            <div className="absolute bottom-12">
+                <img
+                    src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/live-tag.svg"
+                    alt=""
+                    className="object-cover w-full h-full"
+                />
+            </div>
+            <h3 className="mt-2 text-lg font-medium line-clamp-1">
                 {item.host.name}
             </h3>
             <span className="mt-auto text-sm font-normal">
