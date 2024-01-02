@@ -130,17 +130,22 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                                         {item.title}
                                     </h3>
                                     <div className="flex flex-wrap items-center justify-center">
-                                        {item.artists.map((artist) => (
+                                        {item.artists.map((artist, index) => (
                                             <span
-                                                key={artist.id}
+                                                key={index}
+                                                className="text-sm text-gray-500 line-clamp-1 hover:underline"
                                                 onClick={() =>
                                                     navigate(
-                                                        `/nghe-si/${artist.link}`
+                                                        "/nghe-si/" +
+                                                            artist.link
                                                     )
                                                 }
-                                                className="text-sm font-medium leading-relaxed cursor-pointer text-text3 hover:underline"
                                             >
-                                                {`${artist.name},`}&nbsp;
+                                                {artist.name}
+                                                {index !==
+                                                    item.artists.length - 1 &&
+                                                    ","}
+                                                &nbsp;
                                             </span>
                                         ))}
                                     </div>

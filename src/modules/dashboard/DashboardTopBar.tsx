@@ -9,7 +9,7 @@ const DashboardTopBar = () => {
     const showMenu = useSelector((state: RootState) => state.search.showMenu);
     const dispatch = useDispatch();
     return (
-        <div className="fixed z-50 flex items-center justify-between top-5 left-6">
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-between">
             <div className="flex items-center flex-1 gap-x-10">
                 <Link to={"/"} className="inline-block px-[16px]">
                     <img

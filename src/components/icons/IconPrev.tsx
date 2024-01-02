@@ -1,0 +1,25 @@
+const IconPrev = () => {
+    return (
+        <svg
+            width={26}
+            height={26}
+            viewBox="0 0 26 26"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M9.32576 12.8436C8.70826 12.4507 8.70825 11.5493 9.32575 11.1563L17.4631 5.978C18.1288 5.55436 19 6.03257 19 6.82166V17.1783C19 17.9674 18.1288 18.4456 17.4631 18.022L9.32576 12.8436Z"
+                fill="currentColor"
+            />
+            <rect
+                width={2}
+                height={14}
+                rx={1}
+                transform="matrix(-1 0 0 1 7 5)"
+                fill="currentColor"
+            />
+        </svg>
+    );
+};
+
+export default IconPrev;

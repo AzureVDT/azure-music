@@ -95,12 +95,12 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
 const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
     const navigate = useNavigate();
     return (
-        <div
-            className="px-4 py-2 mb-5 rounded-lg cursor-pointer hover:bg-tertiary"
-            onClick={() => navigate(item.link)}
-        >
+        <div className="px-4 py-2 mb-5 rounded-lg hover:bg-tertiary">
             <div className="flex items-center gap-x-5">
-                <div className="flex items-center justify-center w-16 h-16">
+                <div
+                    className="flex items-center justify-center w-16 h-16 cursor-pointer"
+                    onClick={() => navigate(item.link)}
+                >
                     <img
                         src={item.thumbnailM}
                         alt={item.title}
@@ -111,16 +111,18 @@ const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
                     <h4 className="text-xl font-bold leading-relaxed line-clamp-1">
                         {item.title}
                     </h4>
-                    <div className="flex flex-wrap items-center justify-center">
-                        {item.artists.map((artist) => (
+                    <div className="flex flex-wrap items-center justify-center cursor-pointer">
+                        {item.artists.map((artist, index) => (
                             <span
-                                key={artist.id}
+                                key={index}
+                                className="text-sm text-gray-500 line-clamp-1 hover:underline"
                                 onClick={() =>
-                                    navigate(`/nghe-si/${artist.link}`)
+                                    navigate("/nghe-si/" + artist.link)
                                 }
-                                className="text-sm font-medium leading-relaxed cursor-pointer text-text3 hover:underline"
                             >
-                                {`${artist.name},`}&nbsp;
+                                {artist.name}
+                                {index !== item.artists.length - 1 && ","}
+                                &nbsp;
                             </span>
                         ))}
                     </div>

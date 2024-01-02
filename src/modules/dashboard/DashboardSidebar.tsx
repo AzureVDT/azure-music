@@ -49,13 +49,13 @@ const sidebarLinks = [
     },
 ];
 const sidebarClass =
-    "flex items-center gap-x-5 md:w-12 md:h-12 md:justify-center mb-5 md:rounded-lg md:mb-8 md:last:mt-auto last:bg-white md:last:shadow-sdprimary";
+    "flex items-center gap-x-5 md:w-12 md:h-12 md:justify-center mb-5 md:rounded-lg md:mb-8 md:last:mt-5 last:bg-white md:last:shadow-sdprimary";
 const DashboardSideBar = () => {
     const showMenu = useSelector((state: RootState) => state.search.showMenu);
     return (
         <div
             className={`w-full md:w-[76px] bg-white rounded-3xl shadow-[10px_10px_20px_0px_rgba(218,_213,_213,_0.15)] 
-            px-[14px] py-10 flex-col flex-shrink-0 fixed top-20 bottom-0 md:left-5 left-0 md:flex ${
+            px-[14px] py-10 flex-col flex-shrink-0 fixed top-10 bottom-0 left-0 md:flex ${
                 showMenu ? "flex" : "hidden"
             }`}
         >
