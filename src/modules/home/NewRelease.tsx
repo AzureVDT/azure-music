@@ -3,9 +3,14 @@ import NewReleaseTypes, {
     NewReleaseSongTypes,
 } from "../../types/newReleaseTypes";
 import formatDateTime from "../../utils/formatDateTime";
-import { IconChevronRight } from "../../components/icons";
+import { IconChevronRight, IconPlay } from "../../components/icons";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import {
+    setPlayerData,
+    setShowBottomPlayer,
+} from "../../store/actions/musicSlice";
+import { useDispatch } from "react-redux";
 
 const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     const [type, setType] = useState("all");
@@ -13,7 +18,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     if (!data) return null;
     return (
         <div className="mb-20">
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-5 dark:text-lite">
                 <div className="flex flex-col items-start justify-center gap-y-2">
                     <h3 className="text-2xl font-bold leading-relaxed">
                         {data.title}
@@ -21,18 +26,18 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                     <div className="flex items-center justify-center gap-x-5">
                         <span
                             onClick={() => setType("all")}
-                            className={`px-6 py-1 border rounded-full cursor-pointer border-darkSoft ${
+                            className={`px-6 py-1 border rounded-full cursor-pointer dark:border-thirdly border-darkSoft ${
                                 type === "all"
-                                    ? "bg-primary text-white"
+                                    ? "bg-primary dark:bg-thirdly text-white"
                                     : "hover:text-text4"
                             }`}
                         >
                             TẤT CẢ
                         </span>
                         <span
-                            className={`px-6 py-1 border rounded-full cursor-pointer border-darkSoft ${
+                            className={`px-6 py-1 border rounded-full cursor-pointer dark:border-thirdly border-darkSoft ${
                                 type === "vPop"
-                                    ? "bg-primary text-white"
+                                    ? "bg-primary dark:bg-thirdly text-white"
                                     : "hover:text-text4"
                             }`}
                             onClick={() => setType("vPop")}
@@ -41,9 +46,9 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                         </span>
                         <span
                             onClick={() => setType("others")}
-                            className={`px-6 py-1 border rounded-full cursor-pointer border-darkSoft ${
+                            className={`px-6 py-1 border rounded-full cursor-pointer dark:border-thirdly border-darkSoft ${
                                 type === "others"
-                                    ? "bg-primary text-white"
+                                    ? "bg-primary dark:bg-thirdly text-white"
                                     : "hover:text-text4"
                             }`}
                         >
@@ -59,7 +64,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                     <IconChevronRight></IconChevronRight>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-2 gap-5 dark:text-lite">
                 {type === "all" &&
                     data.items.all
                         .slice(0, 8)
@@ -67,6 +72,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                             <NewReleaseItem
                                 key={uuidv4()}
                                 item={item}
+                                navigate={navigate}
                             ></NewReleaseItem>
                         ))}
                 {type === "vPop" &&
@@ -76,6 +82,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                             <NewReleaseItem
                                 key={uuidv4()}
                                 item={item}
+                                navigate={navigate}
                             ></NewReleaseItem>
                         ))}
                 {type === "others" &&
@@ -85,6 +92,7 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
                             <NewReleaseItem
                                 key={uuidv4()}
                                 item={item}
+                                navigate={navigate}
                             ></NewReleaseItem>
                         ))}
             </div>
@@ -92,20 +100,32 @@ const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     );
 };
 
-const NewReleaseItem = ({ item }: { item: NewReleaseSongTypes }) => {
-    const navigate = useNavigate();
+type NewReleaseItemProps = {
+    item: NewReleaseSongTypes;
+    navigate: (link: string) => void;
+};
+
+const NewReleaseItem = ({ item, navigate }: NewReleaseItemProps) => {
+    const dispatch = useDispatch();
+    const handlePlay = () => {
+        dispatch(setPlayerData(item));
+        dispatch(setShowBottomPlayer(true));
+    };
     return (
-        <div className="px-4 py-2 mb-5 rounded-lg hover:bg-tertiary">
+        <div className="px-4 py-2 mb-5 rounded-lg hover:bg-tertiary dark:hover:text-text2">
             <div className="flex items-center gap-x-5">
                 <div
-                    className="flex items-center justify-center w-16 h-16 cursor-pointer"
-                    onClick={() => navigate(item.link)}
+                    className="relative flex items-center justify-center w-16 h-16 cursor-pointer"
+                    onClick={handlePlay}
                 >
                     <img
                         src={item.thumbnailM}
                         alt={item.title}
-                        className="w-full h-full rounded-full"
+                        className="w-full h-full rounded-lg"
                     />
+                    <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500 ease-in-out bg-black opacity-0 bg-opacity-40 text-lite hover:opacity-100">
+                        <IconPlay />
+                    </div>
                 </div>
                 <div className="flex flex-col items-start justify-center">
                     <h4 className="text-xl font-bold leading-relaxed line-clamp-1">

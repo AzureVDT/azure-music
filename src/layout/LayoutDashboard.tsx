@@ -10,12 +10,15 @@ const LayoutDashboard = () => {
     const showSearch = useSelector(
         (state: RootState) => state.search.showSearch
     );
+    const showBottomPlayer = useSelector(
+        (state: RootState) => state.music.showBottomPlayer
+    );
     return (
-        <div className="min-h-screen p-5 bg-lite">
+        <div className="min-h-screen p-5 bg-lite dark:bg-darkBG">
             <Overlay isOpen={showSearch}></Overlay>
             <DashboardTopBar></DashboardTopBar>
             <DashboardSideBar></DashboardSideBar>
-            <DashboardBottomBar></DashboardBottomBar>
+            {showBottomPlayer && <DashboardBottomBar></DashboardBottomBar>}
             <div className="px-32 py-20">
                 <Outlet></Outlet>
             </div>

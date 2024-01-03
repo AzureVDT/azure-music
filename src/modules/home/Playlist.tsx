@@ -13,7 +13,7 @@ const Playlist = ({ data }: { data: HomePlaylistTypes[] }) => {
         <>
             {data.map((item: HomePlaylistTypes) => (
                 <section
-                    className="mb-20 overflow-hidden rounded-lg"
+                    className="mb-20 overflow-hidden rounded-lg dark:text-lite"
                     key={uuidv4()}
                 >
                     <div className="flex items-center justify-between mb-5">
@@ -43,6 +43,7 @@ const Playlist = ({ data }: { data: HomePlaylistTypes[] }) => {
                                     <PlaylistItem
                                         item={item}
                                         key={uuidv4()}
+                                        navigate={navigate}
                                     ></PlaylistItem>
                                 </SwiperSlide>
                             ))}
@@ -54,8 +55,12 @@ const Playlist = ({ data }: { data: HomePlaylistTypes[] }) => {
     );
 };
 
-const PlaylistItem = ({ item }: { item: HomePlaylistItemTypes }) => {
-    const navigate = useNavigate();
+type PlaylistItemProps = {
+    item: HomePlaylistItemTypes;
+    navigate: (link: string) => void;
+};
+
+const PlaylistItem = ({ item, navigate }: PlaylistItemProps) => {
     return (
         <div
             className="flex flex-col items-start justify-center w-full h-full transition-all cursor-pointer"
@@ -68,15 +73,25 @@ const PlaylistItem = ({ item }: { item: HomePlaylistItemTypes }) => {
                     className="object-cover w-full h-full rounded-lg"
                 />
                 <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500 ease-in-out bg-black bg-opacity-50 opacity-0 hover:opacity-100">
-                    <div className="flex items-center justify-center w-10 h-10 border rounded-full">
-                        <IconPlay className="text-primary" />
+                    <div className="flex items-center justify-center w-10 h-10 border rounded-full text-primary">
+                        <IconPlay />
                     </div>
                 </div>
             </div>
             <h3 className="text-lg font-medium line-clamp-1">{item.title}</h3>
-            <span className="mt-auto text-sm font-normal">
-                {item.artistsNames}
-            </span>
+            <div className="flex flex-wrap items-center justify-start cursor-pointer">
+                {item.artists.map((artist, index) => (
+                    <span
+                        key={index}
+                        className="text-sm text-text2 dark:text-grayf3 line-clamp-1 hover:underline"
+                        onClick={() => navigate("/nghe-si/" + artist.link)}
+                    >
+                        {artist.name}
+                        {index !== item.artists.length - 1 && ","}
+                        &nbsp;
+                    </span>
+                ))}
+            </div>
         </div>
     );
 };

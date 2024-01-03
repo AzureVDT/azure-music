@@ -1,4 +1,4 @@
-import IconDarkMode from "./IconDarkMode";
+import IconLightMode from "./IconLightMode";
 import IconLogout from "./IconLogout";
 import IconLibrary from "./IconLibrary";
 import IconExplore from "./IconExplore";
@@ -20,8 +20,8 @@ import IconList from "./IconList";
 import IconMicro from "./IconMicro";
 import IconVolumn from "./IconVolumn";
 import IconNoneVolumn from "./IconNoneVolumn";
+import IconDarkMode from "./IconDarkMode";
 export {
-    IconDarkMode,
     IconLogout,
     IconLibrary,
     IconExplore,
@@ -43,4 +43,6 @@ export {
     IconMicro,
     IconVolumn,
     IconNoneVolumn,
+    IconLightMode,
+    IconDarkMode,
 };

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Radio = ({ data }: { data: HomeRadioTypes }) => {
     const navigate = useNavigate();
     return (
-        <section className="mb-20 overflow-hidden rounded-lg">
+        <section className="mb-20 overflow-hidden rounded-lg dark:text-lite">
             <div className="flex items-center justify-between mb-5">
                 <div className="flex flex-col items-start justify-center gap-y-2">
                     <h3 className="text-2xl font-bold leading-relaxed">
@@ -31,7 +31,10 @@ const Radio = ({ data }: { data: HomeRadioTypes }) => {
                 {data.items.length > 0 &&
                     data.items.map((item: HomeRadioItemTypes) => (
                         <SwiperSlide key={item.encodeId}>
-                            <RadioItem item={item}></RadioItem>
+                            <RadioItem
+                                item={item}
+                                navigate={navigate}
+                            ></RadioItem>
                         </SwiperSlide>
                     ))}
                 <IconSlider></IconSlider>
@@ -40,8 +43,12 @@ const Radio = ({ data }: { data: HomeRadioTypes }) => {
     );
 };
 
-const RadioItem = ({ item }: { item: HomeRadioItemTypes }) => {
-    const navigate = useNavigate();
+type RadioItemProps = {
+    item: HomeRadioItemTypes;
+    navigate: (link: string) => void;
+};
+
+const RadioItem = ({ item, navigate }: RadioItemProps) => {
     return (
         <div
             className="flex flex-col items-center justify-center w-full h-full transition-all cursor-pointer"
@@ -54,8 +61,8 @@ const RadioItem = ({ item }: { item: HomeRadioItemTypes }) => {
                     className="object-cover w-full h-full transition-transform duration-500 ease-in-out transform rounded-full hover:scale-110"
                 />
                 <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500 ease-in-out bg-black bg-opacity-50 opacity-0 hover:opacity-100">
-                    <div className="flex items-center justify-center w-10 h-10 border rounded-full">
-                        <IconPlay className="text-primary" />
+                    <div className="flex items-center justify-center w-10 h-10 border rounded-full text-primary">
+                        <IconPlay />
                     </div>
                 </div>
             </div>
@@ -77,7 +84,7 @@ const RadioItem = ({ item }: { item: HomeRadioItemTypes }) => {
                 {item.host.name}
             </h3>
             <span className="mt-auto text-sm font-normal">
-                {item.activeUsers}
+                {`${item.activeUsers} đang nghe`}
             </span>
         </div>
     );

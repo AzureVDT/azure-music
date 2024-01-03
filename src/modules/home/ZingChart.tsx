@@ -7,8 +7,14 @@ import Chart, {
 } from "chart.js/auto";
 import { IconPlay } from "../../components/icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/configureStore";
 
 const ZingChart = ({ data }: { data: ChartTypes }) => {
+    const isDarkMode = useSelector(
+        (state: RootState) => state.player.isDarkMode
+    );
+    console.log(isDarkMode);
     const navigate = useNavigate();
     const chartRef = useRef(null);
     const labels = data.chart.times
@@ -78,9 +84,22 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                     ],
                 },
                 options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: isDarkMode ? "#fff" : "#000",
+                            },
+                        },
+                    },
                     scales: {
                         y: {
                             display: false,
+                        },
+                        x: {
+                            ticks: {
+                                color: isDarkMode ? "#fff" : "#000",
+                            },
                         },
                     },
                 },
@@ -92,7 +111,7 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                 chartInstance.destroy();
             }
         };
-    }, [data.items, dataset1, dataset2, dataset3, labels]);
+    }, [data.items, dataset1, dataset2, dataset3, isDarkMode, labels]);
     const totalScore = data.chart.totalScore;
     const calculateScore = (score: number) => {
         const percentage = (score / totalScore) * 100;
@@ -102,69 +121,76 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
     if (!data) return null;
 
     return (
-        <section className="px-4 py-5 mb-20 overflow-hidden rounded-lg shadow-sdprimary bg-graySoft">
-            <div className="flex items-center mb-5 gap-x-3">
-                <h3 className="text-3xl font-bold zing-chart-gradient">
-                    #zingchart
-                </h3>
-                <button className="flex items-center justify-center p-2 rounded-full bg-primary">
-                    <IconPlay className="text-grayf3"></IconPlay>
-                </button>
-            </div>
-            <div className="flex items-center justify-center gap-x-5">
-                <div className="flex flex-col items-start justify-center gap-y-10 w-[500px]">
-                    {data.items.slice(0, 3).map((item, index) => (
-                        <div
-                            key={item.encodeId}
-                            className="flex items-center w-full h-full gap-x-2 border-2 border-primary px-[15px] py-[10px] rounded-lg hover:bg-tertiary cursor-pointer"
-                        >
-                            <span className="zing-chart-top">{index + 1}</span>
-                            <div className="flex items-center justify-center gap-x-3">
-                                <img
-                                    src={item.thumbnailM}
-                                    alt=""
-                                    className="object-cover w-[60px] h-[60px] rounded-lg"
-                                />
-                                <div>
-                                    <h3 className="text-xl font-bold leading-relaxed line-clamp-1">
-                                        {item.title}
-                                    </h3>
-                                    <div className="flex flex-wrap items-center justify-center">
-                                        {item.artists.map((artist, index) => (
-                                            <span
-                                                key={index}
-                                                className="text-sm text-gray-500 line-clamp-1 hover:underline"
-                                                onClick={() =>
-                                                    navigate(
-                                                        "/nghe-si/" +
-                                                            artist.link
-                                                    )
-                                                }
-                                            >
-                                                {artist.name}
-                                                {index !==
-                                                    item.artists.length - 1 &&
-                                                    ","}
-                                                &nbsp;
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <span className="flex-shrink-0 ml-auto text-2xl font-bold">
-                                {calculateScore(item.score)}
-                            </span>
-                        </div>
-                    ))}
-                    <button className="px-[25px] py-[5px] rounded-full m-auto bg-primary text-white text-lg hover:bg-secondary">
-                        Xem thêm
+        <>
+            <section className="px-4 py-5 mb-20 overflow-hidden rounded-lg shadow-sdprimary bg-graySoft dark:bg-darkSoft dark:text-lite">
+                <div className="flex items-center mb-5 gap-x-3">
+                    <h3 className="text-3xl font-bold zing-chart-gradient">
+                        #zingchart
+                    </h3>
+                    <button className="flex items-center justify-center p-2 rounded-full bg-primary dark:bg-thirdly text-grayf3">
+                        <IconPlay></IconPlay>
                     </button>
                 </div>
-                <div className="flex-1">
-                    <canvas ref={chartRef} />
+                <div className="flex items-center justify-center gap-x-5">
+                    <div className="flex flex-col items-start justify-center gap-y-10 w-[500px]">
+                        {data.items.slice(0, 3).map((item, index) => (
+                            <div
+                                key={item.encodeId}
+                                className="flex items-center w-full h-full gap-x-2 border-2 dark:border-thirdly border-primary px-[15px] py-[10px] rounded-lg hover:bg-tertiary dark:hover:text-text2 cursor-pointer"
+                            >
+                                <span className="zing-chart-top">
+                                    {index + 1}
+                                </span>
+                                <div className="flex items-center justify-center gap-x-3">
+                                    <img
+                                        src={item.thumbnailM}
+                                        alt=""
+                                        className="object-cover w-[60px] h-[60px] rounded-lg"
+                                    />
+                                    <div>
+                                        <h3 className="text-xl font-bold leading-relaxed line-clamp-1">
+                                            {item.title}
+                                        </h3>
+                                        <div className="flex flex-wrap items-center justify-start">
+                                            {item.artists.map(
+                                                (artist, index) => (
+                                                    <span
+                                                        key={index}
+                                                        className="text-sm text-text2 dark:text-grayf3 line-clamp-1 hover:underline"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                "/nghe-si/" +
+                                                                    artist.link
+                                                            )
+                                                        }
+                                                    >
+                                                        {artist.name}
+                                                        {index !==
+                                                            item.artists
+                                                                .length -
+                                                                1 && ","}
+                                                        &nbsp;
+                                                    </span>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="flex-shrink-0 ml-auto text-2xl font-bold">
+                                    {calculateScore(item.score)}
+                                </span>
+                            </div>
+                        ))}
+                        <button className="px-[25px] py-[5px] rounded-full m-auto bg-primary dark:bg-secondary dark:hover:bg-thirdly text-white text-lg hover:bg-secondary">
+                            Xem thêm
+                        </button>
+                    </div>
+                    <div className="flex-1">
+                        <canvas ref={chartRef} />
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 };
 

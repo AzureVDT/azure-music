@@ -24,17 +24,17 @@ const DashboardSearch = () => {
     return (
         <div className="relative z-50">
             <div
-                className="bg-white rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full flex items-center md:w-[450px]"
+                className="bg-white dark:bg-darkStrock rounded-full shadow-[10px_10px_20px_rgba(218,_213,_213,_0.15)] p-2 w-full flex items-center md:w-[450px]"
                 onClick={() => dispatch(setShowSearch(true))}
             >
                 <div className="flex-1 px-5">
                     <input
                         type="text"
                         placeholder="Search songs, albums, artists, playlists, etc..."
-                        className="w-full text-sm bg-transparent placeholder:text-text4 text-text1"
+                        className="w-full text-sm bg-transparent placeholder:text-text4 dark:placeholder:text-lite text-text1"
                     />
                 </div>
-                <button className="w-[72px] rounded-full bg-primary text-white h-10 flex items-center justify-center flex-shrink-0">
+                <button className="w-[72px] rounded-full dark:bg-secondary bg-primary text-white h-10 flex items-center justify-center flex-shrink-0">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="w-6 h-6"

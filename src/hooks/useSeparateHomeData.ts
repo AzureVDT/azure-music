@@ -2,6 +2,7 @@ import BannerTypes from "../types/bannerTypes";
 import ChartTypes from "../types/chartTypes";
 import HomePlaylistTypes from "../types/homePlaylistTypes";
 import HomeRadioTypes from "../types/homeRadioTypes";
+import HomeWeekChartTypes from "../types/homeWeekChartTypes";
 import NewReleaseTypes from "../types/newReleaseTypes";
 
 const useSeparateHomeData = (
@@ -11,6 +12,7 @@ const useSeparateHomeData = (
         | HomePlaylistTypes
         | HomeRadioTypes
         | ChartTypes
+        | HomeWeekChartTypes
     >
 ) => {
     const bannerData = homeData.filter(
@@ -20,9 +22,9 @@ const useSeparateHomeData = (
     const newReleaseData = homeData.filter(
         (item): item is NewReleaseTypes => item.sectionType === "new-release"
     )[0];
-    // const newReleaseChart = homeData.filter(
-    //     (item: BannerTypes) => item.sectionType === "newReleaseChart"
-    // )[0];
+    const weekChartData = homeData.filter(
+        (item): item is HomeWeekChartTypes => item.sectionType === "weekChart"
+    )[0];
     const playlistData = homeData.filter(
         (item): item is HomePlaylistTypes => item.sectionType === "playlist"
     );
@@ -35,7 +37,7 @@ const useSeparateHomeData = (
     return {
         bannerData,
         newReleaseData,
-        // newReleaseChart,
+        weekChartData,
         playlistData,
         zingChart,
         homeRadioData,

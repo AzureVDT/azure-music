@@ -10,6 +10,7 @@ import NewRelease from "../modules/home/NewRelease";
 import Playlist from "../modules/home/Playlist";
 import Radio from "../modules/home/Radio";
 import ZingChart from "../modules/home/ZingChart";
+import WeekChart from "../modules/home/WeekChart";
 
 const DashboardPage = () => {
     const apiUrl = zingmp3Api.getHomePage();
@@ -21,6 +22,7 @@ const DashboardPage = () => {
         playlistData,
         homeRadioData,
         zingChart,
+        weekChartData,
     } = useSeparateHomeData(homeData);
     useEffect(() => {
         async function fetchData() {
@@ -35,6 +37,7 @@ const DashboardPage = () => {
             <Banner data={bannerData}></Banner>
             <NewRelease data={newReleaseData}></NewRelease>
             <ZingChart data={zingChart}></ZingChart>
+            <WeekChart data={weekChartData}></WeekChart>
             <Playlist data={playlistData}></Playlist>
             <Radio data={homeRadioData}></Radio>
         </>

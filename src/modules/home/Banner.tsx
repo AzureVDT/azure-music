@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BannerTypes, { BannerItemTypes } from "../../types/bannerTypes";
 import { IconSlider } from "../../components/icons";
 const Banner = ({ data }: { data: BannerTypes }) => {
+    const navigate = useNavigate();
     const bannerData = data.items;
     return (
         <section className="mb-20 overflow-hidden rounded-lg">
@@ -16,7 +17,10 @@ const Banner = ({ data }: { data: BannerTypes }) => {
                 {bannerData.length > 0 &&
                     bannerData.map((item: BannerItemTypes) => (
                         <SwiperSlide key={item.encodeId}>
-                            <BannerItem item={item}></BannerItem>
+                            <BannerItem
+                                item={item}
+                                navigate={navigate}
+                            ></BannerItem>
                         </SwiperSlide>
                     ))}
                 <IconSlider></IconSlider>
@@ -25,8 +29,12 @@ const Banner = ({ data }: { data: BannerTypes }) => {
     );
 };
 
-const BannerItem = ({ item }: { item: BannerItemTypes }) => {
-    const navigate = useNavigate();
+type BannerItemProps = {
+    item: BannerItemTypes;
+    navigate: (link: string) => void;
+};
+
+const BannerItem = ({ item, navigate }: BannerItemProps) => {
     return (
         <div
             className="w-full h-full transition-all cursor-pointer"
