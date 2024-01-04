@@ -14,7 +14,6 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
     const isDarkMode = useSelector(
         (state: RootState) => state.player.isDarkMode
     );
-    console.log(isDarkMode);
     const navigate = useNavigate();
     const chartRef = useRef(null);
     const labels = data.chart.times
@@ -136,7 +135,8 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                         {data.items.slice(0, 3).map((item, index) => (
                             <div
                                 key={item.encodeId}
-                                className="flex items-center w-full h-full gap-x-2 border-2 dark:border-thirdly border-primary px-[15px] py-[10px] rounded-lg hover:bg-tertiary dark:hover:text-text2 cursor-pointer"
+                                className="zing-chart_item flex items-center w-full h-full gap-x-2 border-2 dark:border-thirdly border-primary px-[15px] py-[10px] 
+                                rounded-lg hover:bg-tertiary dark:hover:text-text2 cursor-pointer"
                             >
                                 <span className="zing-chart-top">
                                     {index + 1}
@@ -156,7 +156,7 @@ const ZingChart = ({ data }: { data: ChartTypes }) => {
                                                 (artist, index) => (
                                                     <span
                                                         key={index}
-                                                        className="text-sm text-text2 dark:text-grayf3 line-clamp-1 hover:underline"
+                                                        className="text-sm text-text2 dark:text-text3 line-clamp-1 hover:underline"
                                                         onClick={() =>
                                                             navigate(
                                                                 "/nghe-si/" +

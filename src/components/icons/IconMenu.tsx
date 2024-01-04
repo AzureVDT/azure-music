@@ -1,4 +1,4 @@
-const IconMenu = () => {
+const IconMenu = (props: JSX.IntrinsicElements["svg"]) => {
     return (
         <svg
             width={24}
@@ -6,6 +6,7 @@ const IconMenu = () => {
             viewBox="0 0 24 24"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
+            {...props}
         >
             <g clipPath="url(#clip0_1233_26662)">
                 <path

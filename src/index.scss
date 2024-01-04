@@ -10,6 +10,22 @@
     }
 }
 
+.zing-scroll__bar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.zing-scroll__bar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.zing-scroll__bar::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.zing-scroll__bar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .zing-chart-top {
     font-size: 32px;
     font-weight: 900;

@@ -3,10 +3,15 @@ import NewReleaseTypes, {
     NewReleaseSongTypes,
 } from "../../types/newReleaseTypes";
 import formatDateTime from "../../utils/formatDateTime";
-import { IconChevronRight, IconPlay } from "../../components/icons";
+import {
+    IconChevronRight,
+    IconPlay,
+    IconPremium,
+} from "../../components/icons";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import {
+    setIsPremium,
     setPlayerData,
     setShowBottomPlayer,
 } from "../../store/actions/musicSlice";
@@ -110,6 +115,9 @@ const NewReleaseItem = ({ item, navigate }: NewReleaseItemProps) => {
     const handlePlay = () => {
         dispatch(setPlayerData(item));
         dispatch(setShowBottomPlayer(true));
+        item.streamingStatus === 2
+            ? dispatch(setIsPremium(true))
+            : dispatch(setIsPremium(false));
     };
     return (
         <div className="px-4 py-2 mb-5 rounded-lg hover:bg-tertiary dark:hover:text-text2">
@@ -128,9 +136,12 @@ const NewReleaseItem = ({ item, navigate }: NewReleaseItemProps) => {
                     </div>
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                    <h4 className="text-xl font-bold leading-relaxed line-clamp-1">
-                        {item.title}
-                    </h4>
+                    <div className="flex items-center justify-center gap-x-3">
+                        <h4 className="text-xl font-bold leading-relaxed line-clamp-1">
+                            {item.title}
+                        </h4>
+                        {item.streamingStatus === 2 ? <IconPremium /> : null}
+                    </div>
                     <div className="flex flex-wrap items-center justify-center cursor-pointer">
                         {item.artists.map((artist, index) => (
                             <span

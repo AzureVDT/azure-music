@@ -25,6 +25,7 @@ type NewReleaseSongTypes = {
     isPrivate: boolean;
     releaseDate: number;
     genreIds: string[];
+    streamingStatus: number;
 };
 
 type ArtistsItemTypes = {

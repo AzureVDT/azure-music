@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/configureStore";
 import DashboardSideBar from "../modules/dashboard/DashboardSidebar";
 import DashboardBottomBar from "../modules/dashboard/DashboardBottomBar";
+import DashboardQueue from "../modules/dashboard/DashboardQueue";
 
 const LayoutDashboard = () => {
     const showSearch = useSelector(
@@ -18,6 +19,7 @@ const LayoutDashboard = () => {
             <Overlay isOpen={showSearch}></Overlay>
             <DashboardTopBar></DashboardTopBar>
             <DashboardSideBar></DashboardSideBar>
+            <DashboardQueue></DashboardQueue>
             {showBottomPlayer && <DashboardBottomBar></DashboardBottomBar>}
             <div className="px-32 py-20">
                 <Outlet></Outlet>

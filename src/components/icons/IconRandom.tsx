@@ -1,4 +1,4 @@
-const IconRandom = () => {
+const IconRandom = (props: JSX.IntrinsicElements["svg"]) => {
     return (
         <svg
             width={26}
@@ -6,6 +6,7 @@ const IconRandom = () => {
             viewBox="0 0 26 26"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
+            {...props}
         >
             <path
                 d="M16 18C14.423 18 12.9466 17.3826 11.8512 16.3346"

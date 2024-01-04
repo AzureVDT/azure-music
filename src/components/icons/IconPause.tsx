@@ -1,4 +1,4 @@
-const IconPause = () => {
+const IconPause = (props: JSX.IntrinsicElements["svg"]) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -7,6 +7,7 @@ const IconPause = () => {
             strokeWidth="1.5"
             stroke="currentColor"
             className="w-[26px] h-[26px]"
+            {...props}
         >
             <path
                 strokeLinecap="round"
