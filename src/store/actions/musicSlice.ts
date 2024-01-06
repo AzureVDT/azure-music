@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { NewReleaseSongTypes } from "../../types/newReleaseTypes";
+import { HomePlaylistItemTypes } from "../../types/homePlaylistTypes";
 
 type MusicStateTypes = {
     homeData: [];
@@ -9,6 +10,8 @@ type MusicStateTypes = {
     showQueue: boolean;
     showPlaylist: boolean;
     showRecentlyPlayed: boolean;
+    playlistData: HomePlaylistItemTypes;
+    playlistQueue: NewReleaseSongTypes[];
 };
 
 const initialState: MusicStateTypes = {
@@ -19,6 +22,8 @@ const initialState: MusicStateTypes = {
     showQueue: false,
     showPlaylist: true,
     showRecentlyPlayed: false,
+    playlistData: {} as HomePlaylistItemTypes,
+    playlistQueue: [],
 };
 
 const musicSlice = createSlice({
@@ -46,6 +51,18 @@ const musicSlice = createSlice({
         setShowRecentlyPlayed: (state, action: PayloadAction<boolean>) => {
             state.showRecentlyPlayed = action.payload;
         },
+        setPlaylistData: (
+            state,
+            action: PayloadAction<HomePlaylistItemTypes>
+        ) => {
+            state.playlistData = action.payload;
+        },
+        setPlaylistQueue: (
+            state,
+            action: PayloadAction<NewReleaseSongTypes[]>
+        ) => {
+            state.playlistQueue = action.payload;
+        },
     },
 });
 
@@ -57,5 +74,7 @@ export const {
     setShowQueue,
     setShowPlaylist,
     setShowRecentlyPlayed,
+    setPlaylistData,
+    setPlaylistQueue,
 } = musicSlice.actions;
 export default musicSlice.reducer;

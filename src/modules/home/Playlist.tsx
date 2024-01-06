@@ -5,6 +5,8 @@ import HomePlaylistTypes, {
 import { IconChevronRight, IconPlay, IconSlider } from "../../components/icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { setPlaylistData } from "../../store/actions/musicSlice";
 
 const Playlist = ({ data }: { data: HomePlaylistTypes[] }) => {
     const navigate = useNavigate();
@@ -61,10 +63,14 @@ type PlaylistItemProps = {
 };
 
 const PlaylistItem = ({ item, navigate }: PlaylistItemProps) => {
+    const dispatch = useDispatch();
     return (
         <div
             className="flex flex-col items-start justify-center w-full h-full transition-all cursor-pointer"
-            onClick={() => navigate(item.link)}
+            onClick={() => {
+                // navigate(item.link);
+                dispatch(setPlaylistData(item));
+            }}
         >
             <div className="relative w-full h-full">
                 <img

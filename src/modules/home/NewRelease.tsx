@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewReleaseTypes, {
     NewReleaseSongTypes,
 } from "../../types/newReleaseTypes";
@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
     setIsPremium,
     setPlayerData,
+    setPlaylistQueue,
     setShowBottomPlayer,
 } from "../../store/actions/musicSlice";
 import { useDispatch } from "react-redux";
@@ -20,6 +21,10 @@ import { useDispatch } from "react-redux";
 const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     const [type, setType] = useState("all");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPlaylistQueue(data.items.all));
+    }, [data, dispatch]);
     if (!data) return null;
     return (
         <div className="mb-20">
