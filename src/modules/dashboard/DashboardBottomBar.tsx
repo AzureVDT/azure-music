@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { formatDuration } from "../../utils/formatDuration";
 import { toast } from "react-toastify";
 import { setShowQueue } from "../../store/actions/musicSlice";
+import { useEffect } from "react";
+import saveSongIntoRecentPlaylist from "../../utils/saveSongIntoRecentPlaylist";
 
 const DashboardBottomBar = () => {
     const isPlaying = useSelector((state: RootState) => state.player.isPlaying);
@@ -41,6 +43,11 @@ const DashboardBottomBar = () => {
             });
         }
     };
+    useEffect(() => {
+        if (playerData) {
+            saveSongIntoRecentPlaylist(playerData); // set playerData into localStorage in azure-music-recently-played Array
+        }
+    }, [playerData]);
     return (
         <div className="fixed bottom-0 left-0 right-0 h-[90px] shadow-md bg-grayf3 dark:bg-darkSoft dark:text-lite z-50">
             <div className="flex items-center justify-between px-5">
@@ -125,7 +132,9 @@ const DashboardBottomBar = () => {
                     </div>
                     <div className="w-[1px] h-[33px] bg-text2 cursor-pointer"></div>
                     <button
-                        className="w-[30px] h-[30px] rounded-lg bg-text3 text-lite ml"
+                        className={`w-[30px] h-[30px] rounded-lg text-lite ml ${
+                            showQueue ? "bg-primary" : "bg-text3"
+                        }`}
                         onClick={() => dispatch(setShowQueue(!showQueue))}
                     >
                         <IconList></IconList>

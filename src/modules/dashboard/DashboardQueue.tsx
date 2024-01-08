@@ -16,6 +16,8 @@ import {
     Draggable,
     DropResult,
 } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from "uuid";
+import saveSongIntoRecentPlaylist from "../../utils/saveSongIntoRecentPlaylist";
 
 const DashboardQueue = () => {
     const dispatch = useDispatch();
@@ -46,7 +48,9 @@ const DashboardQueue = () => {
         // Dispatch an action to update the playlistQueue state with the new order of items
         dispatch(setPlaylistQueue(items));
     };
-
+    const recentQueue = JSON.parse(
+        localStorage.getItem("azure-music-recently-played") || "[]"
+    );
     return (
         <AnimatePresence>
             {showQueue && (
@@ -87,42 +91,88 @@ const DashboardQueue = () => {
                             <IconMore className="w-[16px] h-[16px] text-lite"></IconMore>
                         </button>
                     </div>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="droppable">
-                            {(provided) => (
-                                <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                >
-                                    {playlistQueue.map((item, index) => (
-                                        <Draggable
-                                            key={item.encodeId}
-                                            draggableId={item.encodeId}
-                                            index={index}
-                                        >
-                                            {(provided, snapshot) => (
-                                                <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
+                    <div className="pb-[90px]">
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided) => (
+                                    <div
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                    >
+                                        {showPlaylist &&
+                                            playlistQueue.map((item, index) => (
+                                                <Draggable
+                                                    key={item.encodeId}
+                                                    draggableId={item.encodeId}
+                                                    index={index}
                                                 >
-                                                    <DashboardQueueItem
-                                                        item={item}
-                                                        navigate={navigate}
-                                                        id={playerData.encodeId}
-                                                        isDragging={
-                                                            snapshot.isDragging
-                                                        }
-                                                    />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    ))}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+                                                    {(provided, snapshot) =>
+                                                        index !==
+                                                        playlistQueue.length -
+                                                            1 ? (
+                                                            <div
+                                                                ref={
+                                                                    provided.innerRef
+                                                                }
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                            >
+                                                                <DashboardQueueItem
+                                                                    item={item}
+                                                                    navigate={
+                                                                        navigate
+                                                                    }
+                                                                    id={
+                                                                        playerData.encodeId
+                                                                    }
+                                                                    isDragging={
+                                                                        snapshot.isDragging
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <div
+                                                                ref={
+                                                                    provided.innerRef
+                                                                }
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                            >
+                                                                <DashboardQueueItem
+                                                                    item={item}
+                                                                    navigate={
+                                                                        navigate
+                                                                    }
+                                                                    id={
+                                                                        playerData.encodeId
+                                                                    }
+                                                                    isDragging={
+                                                                        snapshot.isDragging
+                                                                    }
+                                                                    isLast={
+                                                                        true
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                    }
+                                                </Draggable>
+                                            ))}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                        {showRecentlyPlayed &&
+                            recentQueue.map((item: NewReleaseSongTypes) => (
+                                <DashboardQueueItem
+                                    item={item}
+                                    key={uuidv4()}
+                                    navigate={navigate}
+                                    id={playerData.encodeId}
+                                    isRecentPlaylist={true}
+                                ></DashboardQueueItem>
+                            ))}
+                    </div>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -133,7 +183,9 @@ type QueueItemProps = {
     item: NewReleaseSongTypes;
     navigate: (link: string) => void;
     id: string;
-    isDragging: boolean;
+    isDragging?: boolean;
+    isRecentPlaylist?: boolean;
+    isLast?: boolean;
 };
 
 const DashboardQueueItem = ({
@@ -141,9 +193,19 @@ const DashboardQueueItem = ({
     navigate,
     id,
     isDragging,
+    isRecentPlaylist,
+    isLast,
 }: QueueItemProps) => {
     const dispatch = useDispatch();
-    const isActive = item.encodeId === id;
+    const isActive = item.encodeId === id && !isRecentPlaylist;
+    const handlePlaySong = () => {
+        dispatch(setPlayerData(item));
+        saveSongIntoRecentPlaylist(item);
+        if (isRecentPlaylist) {
+            dispatch(setShowRecentlyPlayed(false));
+            dispatch(setShowPlaylist(true));
+        }
+    };
     return (
         <>
             <div
@@ -155,7 +217,7 @@ const DashboardQueueItem = ({
             >
                 <div
                     className="relative flex-shrink-0 w-10 h-10 rounded-md cursor-pointer bg-text2"
-                    onClick={() => dispatch(setPlayerData(item))}
+                    onClick={handlePlaySong}
                 >
                     <img
                         src={item.thumbnailM}
@@ -196,7 +258,7 @@ const DashboardQueueItem = ({
                     </div>
                 </div>
             </div>
-            {!isDragging && isActive && (
+            {!isDragging && !isLast && isActive && (
                 <div className="flex flex-col items-start justify-center px-2 my-3 gap-y-2">
                     <h3 className="font-bold text-md text-lite">Tiếp theo</h3>
                     <p className="text-sm font-medium gap-x-3 text-text3">

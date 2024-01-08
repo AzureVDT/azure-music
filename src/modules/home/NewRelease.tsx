@@ -15,6 +15,8 @@ import {
     setPlayerData,
     setPlaylistQueue,
     setShowBottomPlayer,
+    setShowPlaylist,
+    setShowRecentlyPlayed,
 } from "../../store/actions/musicSlice";
 import { useDispatch } from "react-redux";
 
@@ -120,6 +122,8 @@ const NewReleaseItem = ({ item, navigate }: NewReleaseItemProps) => {
     const handlePlay = () => {
         dispatch(setPlayerData(item));
         dispatch(setShowBottomPlayer(true));
+        dispatch(setShowPlaylist(true));
+        dispatch(setShowRecentlyPlayed(false));
         item.streamingStatus === 2
             ? dispatch(setIsPremium(true))
             : dispatch(setIsPremium(false));
