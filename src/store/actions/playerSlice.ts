@@ -7,7 +7,8 @@ type PlayerStateTypes = {
 
 const initialState: PlayerStateTypes = {
     isPlaying: false,
-    isDarkMode: false,
+    isDarkMode:
+        localStorage.getItem("dark-mode-enabled") === "true" ? true : false,
 };
 
 const playerSlice = createSlice({

@@ -3,13 +3,19 @@ import { IconMore, IconPlay, IconPremium } from "../../components/icons";
 import { RootState } from "../../store/configureStore";
 import {
     setPlayerData,
+    setPlaylistQueue,
     setShowPlaylist,
     setShowRecentlyPlayed,
 } from "../../store/actions/musicSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { NewReleaseSongTypes } from "../../types/newReleaseTypes";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import {
+    DragDropContext,
+    Droppable,
+    Draggable,
+    DropResult,
+} from "react-beautiful-dnd";
 
 const DashboardQueue = () => {
     const dispatch = useDispatch();
@@ -28,15 +34,19 @@ const DashboardQueue = () => {
     const playerData = useSelector(
         (state: RootState) => state.music.playerData
     );
+    const onDragEnd = (result: DropResult) => {
+        if (!result.destination) {
+            return;
+        }
 
-    const currentSongPlayed = playlistQueue.filter(
-        (item) => item.encodeId === playerData.encodeId
-    )[0];
+        const items = Array.from(playlistQueue);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
 
-    const newPlaylistQueue = playlistQueue.filter(
-        (item) => item.encodeId !== playerData.encodeId
-    );
-    newPlaylistQueue.unshift(currentSongPlayed);
+        // Dispatch an action to update the playlistQueue state with the new order of items
+        dispatch(setPlaylistQueue(items));
+    };
+
     return (
         <AnimatePresence>
             {showQueue && (
@@ -77,17 +87,42 @@ const DashboardQueue = () => {
                             <IconMore className="w-[16px] h-[16px] text-lite"></IconMore>
                         </button>
                     </div>
-                    <div className="pb-[90px]">
-                        {showPlaylist &&
-                            newPlaylistQueue.map((item) => (
-                                <DashboardQueueItem
-                                    item={item}
-                                    key={uuidv4()}
-                                    navigate={navigate}
-                                    id={playerData.encodeId}
-                                ></DashboardQueueItem>
-                            ))}
-                    </div>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided) => (
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {playlistQueue.map((item, index) => (
+                                        <Draggable
+                                            key={item.encodeId}
+                                            draggableId={item.encodeId}
+                                            index={index}
+                                        >
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    <DashboardQueueItem
+                                                        item={item}
+                                                        navigate={navigate}
+                                                        id={playerData.encodeId}
+                                                        isDragging={
+                                                            snapshot.isDragging
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -98,15 +133,21 @@ type QueueItemProps = {
     item: NewReleaseSongTypes;
     navigate: (link: string) => void;
     id: string;
+    isDragging: boolean;
 };
 
-const DashboardQueueItem = ({ item, navigate, id }: QueueItemProps) => {
+const DashboardQueueItem = ({
+    item,
+    navigate,
+    id,
+    isDragging,
+}: QueueItemProps) => {
     const dispatch = useDispatch();
     const isActive = item.encodeId === id;
     return (
         <>
             <div
-                className={`w-full h-[56px] flex items-center justify-start gap-x-5 rounded-lg px-2 ${
+                className={`w-full h-[56px] flex items-center justify-start gap-x-5 rounded-lg px-2 bg-darkSoft select-none ${
                     isActive
                         ? "bg-opacity-80 bg-secondary"
                         : "hover:bg-opacity-80 hover:bg-tertiary"
@@ -155,7 +196,7 @@ const DashboardQueueItem = ({ item, navigate, id }: QueueItemProps) => {
                     </div>
                 </div>
             </div>
-            {isActive && (
+            {!isDragging && isActive && (
                 <div className="flex flex-col items-start justify-center px-2 my-3 gap-y-2">
                     <h3 className="font-bold text-md text-lite">Tiếp theo</h3>
                     <p className="text-sm font-medium gap-x-3 text-text3">
