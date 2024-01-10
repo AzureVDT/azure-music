@@ -1,3 +1,5 @@
+import { AlbumItemTypes } from "./albumTypes";
+
 type NewReleaseTypes = {
     items: NewReleaseItemTypes;
     link: string;
@@ -26,6 +28,7 @@ type NewReleaseSongTypes = {
     releaseDate: number;
     genreIds: string[];
     streamingStatus: number;
+    album?: AlbumItemTypes;
 };
 
 type ArtistsItemTypes = {

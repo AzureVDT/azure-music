@@ -151,11 +151,11 @@ const NewReleaseItem = ({ item, navigate }: NewReleaseItemProps) => {
                         </h4>
                         {item.streamingStatus === 2 ? <IconPremium /> : null}
                     </div>
-                    <div className="flex flex-wrap items-center justify-center cursor-pointer">
+                    <div className="flex flex-wrap items-center justify-start cursor-pointer line-clamp-1">
                         {item.artists.map((artist, index) => (
                             <span
                                 key={index}
-                                className="text-sm text-gray-500 line-clamp-1 hover:underline"
+                                className="text-sm text-gray-500 hover:underline line-clamp-1"
                                 onClick={() =>
                                     navigate("/nghe-si/" + artist.link)
                                 }

@@ -206,6 +206,7 @@ const DashboardQueueItem = ({
             dispatch(setShowPlaylist(true));
         }
     };
+    const albumData = useSelector((state: RootState) => state.music.albumData);
     return (
         <>
             <div
@@ -241,7 +242,7 @@ const DashboardQueueItem = ({
                                 isActive ? "text-lite" : ""
                             }`}
                         >
-                            {item.artists.map((artist, index) => (
+                            {item?.artists?.map((artist, index) => (
                                 <span
                                     key={index}
                                     className="flex-shrink-0 text-xs cursor-pointer hover:underline hover:text-lite"
@@ -262,10 +263,11 @@ const DashboardQueueItem = ({
                 <div className="flex flex-col items-start justify-center px-2 my-3 gap-y-2">
                     <h3 className="font-bold text-md text-lite">Tiếp theo</h3>
                     <p className="text-sm font-medium gap-x-3 text-text3">
-                        <span>Từ danh sách bài hát </span>
-
+                        <span>
+                            Từ {item.album ? "playlist" : "danh sách bài hát"}{" "}
+                        </span>
                         <strong className="cursor-pointer text-secondary">
-                            Mới phát hành
+                            {item.album ? albumData.title : "Mới phát hành"}
                         </strong>
                     </p>
                 </div>

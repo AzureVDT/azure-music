@@ -12,6 +12,7 @@ import PageNotFound from "./pages/PageNotFound.tsx";
 import LayoutDashboard from "./layout/LayoutDashboard.tsx";
 import "swiper/swiper-bundle.css";
 import "react-toastify/dist/ReactToastify.css";
+import AlbumPage from "./pages/AlbumPage.tsx";
 const router = createBrowserRouter([
     {
         element: <LayoutDashboard />,
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <DashboardPage />,
+            },
+            {
+                path: "/album/:slug/:id",
+                element: <AlbumPage />,
             },
         ],
     },

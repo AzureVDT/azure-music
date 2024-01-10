@@ -64,12 +64,13 @@ type PlaylistItemProps = {
 
 const PlaylistItem = ({ item, navigate }: PlaylistItemProps) => {
     const dispatch = useDispatch();
+    const link = item.link.split(".html")[0];
     return (
         <div
             className="flex flex-col items-start justify-center w-full h-full transition-all cursor-pointer"
             onClick={() => {
-                // navigate(item.link);
                 dispatch(setPlaylistData(item));
+                navigate(link);
             }}
         >
             <div className="relative w-full h-full">
@@ -86,7 +87,7 @@ const PlaylistItem = ({ item, navigate }: PlaylistItemProps) => {
             </div>
             <h3 className="text-lg font-medium line-clamp-1">{item.title}</h3>
             <div className="flex flex-wrap items-center justify-start cursor-pointer">
-                {item.artists.map((artist, index) => (
+                {item?.artists?.map((artist, index) => (
                     <span
                         key={index}
                         className="text-sm text-text2 dark:text-grayf3 line-clamp-1 hover:underline"
