@@ -1,10 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-import { IconMore, IconPlay, IconPremium } from "../../components/icons";
+import {
+    IconAdd,
+    IconDelete,
+    IconDownload,
+    IconMore,
+    IconPlay,
+    IconPremium,
+} from "../../components/icons";
 import { RootState } from "../../store/configureStore";
 import {
     setPlayerData,
     setPlaylistQueue,
+    setShowBottomPlayer,
     setShowPlaylist,
+    setShowQueue,
     setShowRecentlyPlayed,
 } from "../../store/actions/musicSlice";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,9 +27,11 @@ import {
 } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import saveSongIntoRecentPlaylist from "../../utils/saveSongIntoRecentPlaylist";
+import { useState } from "react";
 
 const DashboardQueue = () => {
     const dispatch = useDispatch();
+    const [showOptions, setShowOptions] = useState(false);
     const showQueue = useSelector((state: RootState) => state.music.showQueue);
     const showPlaylist = useSelector(
         (state: RootState) => state.music.showPlaylist
@@ -51,6 +62,14 @@ const DashboardQueue = () => {
     const recentQueue = JSON.parse(
         localStorage.getItem("azure-music-recently-played") || "[]"
     );
+    const handleDeleteQueue = () => {
+        dispatch(setPlaylistQueue([]));
+        dispatch(setShowPlaylist(false));
+        dispatch(setShowRecentlyPlayed(false));
+        dispatch(setShowBottomPlayer(false));
+        dispatch(setShowQueue(false));
+    };
+
     return (
         <AnimatePresence>
             {showQueue && (
@@ -87,9 +106,37 @@ const DashboardQueue = () => {
                                 Nghe gần đây
                             </button>
                         </div>
-                        <button className="w-[32px] h-[32px] flex items-center justify-center bg-text3 rounded-full ml-[30px] flex-shrink-0">
+                        <button
+                            onClick={() => setShowOptions(!showOptions)}
+                            className="w-[32px] h-[32px] flex items-center justify-center bg-text3 rounded-full ml-[30px] flex-shrink-0"
+                        >
                             <IconMore className="w-[16px] h-[16px] text-lite"></IconMore>
                         </button>
+                        {showOptions && (
+                            <div className="rounded-lg fixed shadow-sm bg-darkSecondary top-16 z-50 right-5 w-[240px] h-[130px] py-[10px] flex flex-col justify-center">
+                                <button
+                                    onClick={handleDeleteQueue}
+                                    className="flex items-center justify-start flex-shrink-0 gap-x-3 py-[10px] px-[15px] hover:bg-secondary hover:bg-opacity-40"
+                                >
+                                    <IconDelete className="w-4 h-4"></IconDelete>
+                                    <span className="text-sm font-normal">
+                                        Xóa danh sách phát
+                                    </span>
+                                </button>
+                                <button className="flex items-center justify-start flex-shrink-0 gap-x-3 py-[10px] px-[15px] hover:bg-secondary hover:bg-opacity-40">
+                                    <IconDownload className="w-4 h-4"></IconDownload>
+                                    <span className="text-sm font-normal">
+                                        Tải danh sách phát
+                                    </span>
+                                </button>
+                                <button className="flex items-center justify-start flex-shrink-0 gap-x-3 py-[10px] px-[15px] hover:bg-secondary hover:bg-opacity-40">
+                                    <IconAdd className="w-4 h-4"></IconAdd>
+                                    <span className="text-sm font-normal">
+                                        Thêm vào playlist
+                                    </span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                     <div className="pb-[90px]">
                         <DragDropContext onDragEnd={onDragEnd}>
@@ -170,6 +217,7 @@ const DashboardQueue = () => {
                                     navigate={navigate}
                                     id={playerData.encodeId}
                                     isRecentPlaylist={true}
+                                    playlistQueue={playlistQueue}
                                 ></DashboardQueueItem>
                             ))}
                     </div>
@@ -186,6 +234,7 @@ type QueueItemProps = {
     isDragging?: boolean;
     isRecentPlaylist?: boolean;
     isLast?: boolean;
+    playlistQueue?: NewReleaseSongTypes[];
 };
 
 const DashboardQueueItem = ({
@@ -195,6 +244,7 @@ const DashboardQueueItem = ({
     isDragging,
     isRecentPlaylist,
     isLast,
+    playlistQueue,
 }: QueueItemProps) => {
     const dispatch = useDispatch();
     const isActive = item.encodeId === id && !isRecentPlaylist;
@@ -202,6 +252,18 @@ const DashboardQueueItem = ({
         dispatch(setPlayerData(item));
         saveSongIntoRecentPlaylist(item);
         if (isRecentPlaylist) {
+            const isExist = playlistQueue?.find(
+                (song) => song.encodeId === item.encodeId
+            );
+            if (!isExist) {
+                // add item under the item has isActive = true
+                const index = playlistQueue?.findIndex(
+                    (song) => song.encodeId === id
+                );
+                const newPlaylistQueue = [...(playlistQueue ?? [])];
+                newPlaylistQueue.splice((index as number) + 1, 0, item);
+                dispatch(setPlaylistQueue(newPlaylistQueue));
+            }
             dispatch(setShowRecentlyPlayed(false));
             dispatch(setShowPlaylist(true));
         }

@@ -40,7 +40,7 @@ type ArtistsItemTypes = {
     thumbnail: string;
     thumbnailM: string;
     playlistId: string;
-    totalFollows?: number;
+    totalFollow?: number;
 };
 
 export type { NewReleaseItemTypes, NewReleaseSongTypes, ArtistsItemTypes };
