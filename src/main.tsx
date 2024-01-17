@@ -13,6 +13,8 @@ import LayoutDashboard from "./layout/LayoutDashboard.tsx";
 import "swiper/swiper-bundle.css";
 import "react-toastify/dist/ReactToastify.css";
 import AlbumPage from "./pages/AlbumPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 const router = createBrowserRouter([
     {
         element: <LayoutDashboard />,
@@ -27,6 +29,8 @@ const router = createBrowserRouter([
             },
         ],
     },
+    { path: "/register", element: <RegisterPage /> },
+    { path: "/login", element: <LoginPage /> },
     { path: "*", element: <PageNotFound /> },
 ]);
 
