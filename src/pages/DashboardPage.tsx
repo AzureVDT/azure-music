@@ -16,6 +16,8 @@ const DashboardPage = () => {
     const apiUrl = zingmp3Api.getHomePage();
     const dispatch = useDispatch();
     const homeData = useSelector((state: RootState) => state.music.homeData);
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log("DashboardPage ~ user:", user);
     const {
         bannerData,
         newReleaseData,

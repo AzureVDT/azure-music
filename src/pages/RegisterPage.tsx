@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
-import Button, { ButtonFacebook, ButtonGoogle } from "../components/button";
+import Button, { ButtonGoogle } from "../components/button";
 import FormGroup from "../components/common/FormGroup";
 import Label from "../components/label";
 import { Input } from "../components/input";
@@ -66,7 +66,6 @@ const RegisterPage = () => {
                 </Link>
             </p>
             <ButtonGoogle text="Sign up with google"></ButtonGoogle>
-            <ButtonFacebook text="Sign up with facebook"></ButtonFacebook>
             <p className="mb-4 text-xs font-normal text-center lg:text-sm lg:mb-8 text-text2 dark:text-white">
                 Or sign up with email
             </p>

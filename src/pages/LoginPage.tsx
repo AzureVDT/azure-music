@@ -1,16 +1,17 @@
 import { useForm } from "react-hook-form";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import useToggleValue from "../hooks/useToggleValue";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
-import Button, { ButtonFacebook, ButtonGoogle } from "../components/button";
+import { Link, useNavigate } from "react-router-dom";
+import Button, { ButtonGoogle } from "../components/button";
 import FormGroup from "../components/common/FormGroup";
 import Label from "../components/label";
 import { Input } from "../components/input";
 import { IconEyeToggle } from "../components/icons";
 import { LoginData } from "../types/formData";
+import { handleLoginWithGoogle } from "../utils/handleLoginWithGoogle";
 
 const schema = yup.object({
     email: yup
@@ -31,12 +32,13 @@ const schema = yup.object({
 });
 
 const LoginPage = () => {
+    const navigate = useNavigate();
     const {
         handleSubmit,
         control,
         formState: { isValid, errors },
     } = useForm({ resolver: yupResolver(schema) });
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const handleSignIn = (values: LoginData) => {
         if (!isValid) return;
         console.log(values);
@@ -55,8 +57,10 @@ const LoginPage = () => {
                     Sign up
                 </Link>
             </p>
-            <ButtonGoogle text="Sign in with google"></ButtonGoogle>
-            <ButtonFacebook text="Sign in with facebook"></ButtonFacebook>
+            <ButtonGoogle
+                text="Sign in with google"
+                onClick={() => handleLoginWithGoogle(navigate, dispatch)}
+            ></ButtonGoogle>
             <form onSubmit={handleSubmit(handleSignIn)}>
                 <FormGroup>
                     <Label htmlFor="email">Email *</Label>
