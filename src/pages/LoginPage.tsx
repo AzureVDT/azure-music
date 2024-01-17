@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import Button, { ButtonFacebook, ButtonGoogle } from "../components/button";
 import FormGroup from "../components/common/FormGroup";
 import Label from "../components/label";
-import Input from "../components/input";
+import { Input } from "../components/input";
 import { IconEyeToggle } from "../components/icons";
 import { LoginData } from "../types/formData";
 
