@@ -11,13 +11,15 @@ import Playlist from "../modules/home/Playlist";
 import Radio from "../modules/home/Radio";
 import ZingChart from "../modules/home/ZingChart";
 import WeekChart from "../modules/home/WeekChart";
+import { useAuth } from "../contexts/auth-context";
+import RequiredAuthPage from "./RequiredAuthPage";
 
 const DashboardPage = () => {
     const apiUrl = zingmp3Api.getHomePage();
     const dispatch = useDispatch();
     const homeData = useSelector((state: RootState) => state.music.homeData);
-    const user = useSelector((state: RootState) => state.user.user);
-    console.log("DashboardPage ~ user:", user);
+    const { userInfo } = useAuth() || {};
+    console.log(userInfo);
     const {
         bannerData,
         newReleaseData,
@@ -35,14 +37,14 @@ const DashboardPage = () => {
     }, [apiUrl, dispatch]);
     if (homeData.length === 0) return null;
     return (
-        <>
+        <RequiredAuthPage>
             <Banner data={bannerData}></Banner>
             <NewRelease data={newReleaseData}></NewRelease>
             <ZingChart data={zingChart}></ZingChart>
             <WeekChart data={weekChartData}></WeekChart>
             <Playlist data={playlistData}></Playlist>
             <Radio data={homeRadioData}></Radio>
-        </>
+        </RequiredAuthPage>
     );
 };
 

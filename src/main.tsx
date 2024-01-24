@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AlbumPage from "./pages/AlbumPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
+import { AuthProvider } from "./contexts/auth-context.tsx";
 const router = createBrowserRouter([
     {
         element: <LayoutDashboard />,
@@ -36,9 +37,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
-        <App>
-            <RouterProvider router={router}></RouterProvider>
-        </App>
-        <ToastContainer bodyClassName="font-primary text-sm"></ToastContainer>
+        <AuthProvider value={null}>
+            <App>
+                <RouterProvider router={router}></RouterProvider>
+            </App>
+            <ToastContainer bodyClassName="font-primary text-sm"></ToastContainer>
+        </AuthProvider>
     </Provider>
 );

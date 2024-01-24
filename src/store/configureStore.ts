@@ -8,7 +8,7 @@ const reducer = combineReducers({
     player: playerSlice,
     search: searchSlice,
     music: musicSlice,
-    user: userSlice,
+    auth: userSlice,
 });
 
 const store = configureStore({

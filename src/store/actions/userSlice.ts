@@ -1,14 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { User } from "firebase/auth";
 
 const initialState = {
     user: {},
 };
 
 const userSlice = createSlice({
-    name: "user",
+    name: "auth",
     initialState,
     reducers: {
-        setUser: (state, action) => {
+        setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
         },
     },

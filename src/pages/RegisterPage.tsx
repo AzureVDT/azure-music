@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
 import Button, { ButtonGoogle } from "../components/button";
 import FormGroup from "../components/common/FormGroup";
@@ -8,10 +8,17 @@ import { IconEyeToggle } from "../components/icons";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useDispatch } from "react-redux";
 import useToggleValue from "../hooks/useToggleValue";
 import Checkbox from "../components/checkbox";
 import { RegisterData } from "../types/formData";
+import { handleLoginWithGoogle } from "../utils/handleLoginWithGoogle";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { auth, db } from "../utils/firebaseConfig";
+import { toast } from "react-toastify";
+import bcrypt from "bcryptjs";
+import { useEffect } from "react";
+import { useAuth } from "../contexts/auth-context";
 
 const schema = yup.object({
     name: yup.string().required("This field is required"),
@@ -36,24 +43,51 @@ const RegisterPage = () => {
     const {
         handleSubmit,
         control,
-        formState: { isValid, errors },
+        formState: { isValid, errors, isSubmitting },
         reset,
     } = useForm({ resolver: yupResolver(schema) });
-    // const dispatch = useDispatch();
-    const handleSignUp = (values: RegisterData) => {
+    const navigate = useNavigate();
+    const { userInfo } = useAuth() || {};
+    const handleSignUp = async (values: RegisterData) => {
         if (!isValid) return;
         try {
-            console.log(values);
-            // dispatch(authRegister(values));
-            reset({});
+            await createUserWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
+            if (auth.currentUser) {
+                const hashedPassword = await bcrypt.hash(values.password, 10);
+                await setDoc(doc(db, "users", auth.currentUser.uid), {
+                    name: values.name,
+                    email: values.email,
+                    password: hashedPassword,
+                    avatar: "https://source.unsplash.com/random",
+                    createdAt: serverTimestamp(),
+                });
+                await updateProfile(auth.currentUser, {
+                    displayName: values.name,
+                    photoURL: "https://source.unsplash.com/random",
+                });
+                toast.success("Register successfully");
+                reset({});
+                navigate("/");
+            } else {
+                toast.error("Register failed, please try again later");
+            }
         } catch (error) {
-            console.log(error);
+            toast.error("Email already exists");
         }
     };
     const { value: acceptTerm, handleToggleValue: handleToggleTerm } =
         useToggleValue();
     const { value: showPassword, handleToggleValue: handleTogglePassword } =
         useToggleValue();
+    useEffect(() => {
+        if (userInfo?.email) {
+            navigate("/");
+        }
+    }, [navigate, userInfo]);
     return (
         <LayoutAuthentication heading="Register">
             <p className="mb-6 text-xs font-normal text-center lg:mb-8 lg:text-sm text-text3">
@@ -65,7 +99,10 @@ const RegisterPage = () => {
                     Login
                 </Link>
             </p>
-            <ButtonGoogle text="Sign up with google"></ButtonGoogle>
+            <ButtonGoogle
+                text="Sign up with google"
+                onClick={() => handleLoginWithGoogle(navigate)}
+            ></ButtonGoogle>
             <p className="mb-4 text-xs font-normal text-center lg:text-sm lg:mb-8 text-text2 dark:text-white">
                 Or sign up with email
             </p>
@@ -124,7 +161,12 @@ const RegisterPage = () => {
                         </p>
                     </Checkbox>
                 </div>
-                <Button className="w-full" kind="primary" type="submit">
+                <Button
+                    className="w-full"
+                    kind="primary"
+                    type="submit"
+                    isLoading={isSubmitting}
+                >
                     Create my account
                 </Button>
             </form>

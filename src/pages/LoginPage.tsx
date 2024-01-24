@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
 import useToggleValue from "../hooks/useToggleValue";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +11,11 @@ import { Input } from "../components/input";
 import { IconEyeToggle } from "../components/icons";
 import { LoginData } from "../types/formData";
 import { handleLoginWithGoogle } from "../utils/handleLoginWithGoogle";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import { auth } from "../utils/firebaseConfig";
+import { useAuth } from "../contexts/auth-context";
+import { useEffect } from "react";
 
 const schema = yup.object({
     email: yup
@@ -36,13 +40,22 @@ const LoginPage = () => {
     const {
         handleSubmit,
         control,
-        formState: { isValid, errors },
+        formState: { isValid, errors, isSubmitting },
     } = useForm({ resolver: yupResolver(schema) });
-    const dispatch = useDispatch();
-    const handleSignIn = (values: LoginData) => {
+    const { userInfo } = useAuth() || {};
+    useEffect(() => {
+        if (userInfo?.email) {
+            navigate("/");
+        }
+    }, [navigate, userInfo]);
+    const handleSignIn = async (values: LoginData) => {
         if (!isValid) return;
-        console.log(values);
-        // dispatch(authLogin(values));
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        toast.success("Login successfully", {
+            pauseOnHover: false,
+            delay: 0,
+        });
+        navigate("/");
     };
     const { value: showPassword, handleToggleValue: handleTogglePassword } =
         useToggleValue();
@@ -59,7 +72,7 @@ const LoginPage = () => {
             </p>
             <ButtonGoogle
                 text="Sign in with google"
-                onClick={() => handleLoginWithGoogle(navigate, dispatch)}
+                onClick={() => handleLoginWithGoogle(navigate)}
             ></ButtonGoogle>
             <form onSubmit={handleSubmit(handleSignIn)}>
                 <FormGroup>
@@ -94,7 +107,12 @@ const LoginPage = () => {
                         </span>
                     </div>
                 </FormGroup>
-                <Button kind="primary" className="w-full" type="submit">
+                <Button
+                    kind="primary"
+                    className="w-full"
+                    type="submit"
+                    isLoading={isSubmitting}
+                >
                     Sign In
                 </Button>
             </form>
