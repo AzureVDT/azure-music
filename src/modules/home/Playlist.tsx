@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import HomePlaylistTypes, {
     HomePlaylistItemTypes,
 } from "../../types/homePlaylistTypes";
@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { setPlaylistData } from "../../store/actions/musicSlice";
+import { setPrevPath } from "../../store/actions/commonSlice";
 
 const Playlist = ({ data }: { data: HomePlaylistTypes[] }) => {
     const navigate = useNavigate();
@@ -65,11 +66,13 @@ type PlaylistItemProps = {
 const PlaylistItem = ({ item, navigate }: PlaylistItemProps) => {
     const dispatch = useDispatch();
     const link = item.link.split(".html")[0];
+    const currentPath = useLocation().pathname;
     return (
         <div
             className="flex flex-col items-start justify-center w-full h-full transition-all cursor-pointer"
             onClick={() => {
                 dispatch(setPlaylistData(item));
+                dispatch(setPrevPath(currentPath));
                 navigate(link);
             }}
         >

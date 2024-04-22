@@ -1,7 +1,7 @@
 import { ArtistsItemTypes, NewReleaseSongTypes } from "./newReleaseTypes";
 
 type AlbumTypes = {
-    encodedId: string;
+    encodeId: string;
     title: string;
     thumbnail: string;
     isOfficial: boolean;

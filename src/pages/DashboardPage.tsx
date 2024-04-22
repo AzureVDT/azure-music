@@ -11,15 +11,12 @@ import Playlist from "../modules/home/Playlist";
 import Radio from "../modules/home/Radio";
 import ZingChart from "../modules/home/ZingChart";
 import WeekChart from "../modules/home/WeekChart";
-import { useAuth } from "../contexts/auth-context";
 import RequiredAuthPage from "./RequiredAuthPage";
 
 const DashboardPage = () => {
     const apiUrl = zingmp3Api.getHomePage();
     const dispatch = useDispatch();
     const homeData = useSelector((state: RootState) => state.music.homeData);
-    const { userInfo } = useAuth() || {};
-    console.log(userInfo);
     const {
         bannerData,
         newReleaseData,
@@ -33,8 +30,8 @@ const DashboardPage = () => {
             const res = await axios.get(apiUrl);
             dispatch(setHomeData(res.data.data.items));
         }
-        fetchData();
-    }, [apiUrl, dispatch]);
+        if (homeData.length === 0) fetchData();
+    }, [apiUrl, dispatch, homeData.length]);
     if (homeData.length === 0) return null;
     return (
         <RequiredAuthPage>

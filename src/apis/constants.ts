@@ -71,4 +71,6 @@ export const zingmp3Api = {
     // get song:
     getSong: (encodeId: string) =>
         `https://zing-mp3-api.vercel.app/api/song/info/${encodeId}`,
+    getStreaming: (encodeId: string) =>
+        `https://zing-mp3-api.vercel.app/api/song/${encodeId}`,
 };

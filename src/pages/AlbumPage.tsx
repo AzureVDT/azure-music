@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store/configureStore";
 import { useEffect } from "react";
 import axios from "axios";
 import { zingmp3Api } from "../apis/constants";
@@ -9,6 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import AlbumDetails from "../modules/album/AlbumDetails";
 import AlbumItem from "../modules/album/AlbumItem";
 import AlbumSinger from "./AlbumSinger";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/configureStore";
 
 const AlbumPage = () => {
     // get slug from url
@@ -22,9 +22,9 @@ const AlbumPage = () => {
             dispatch(setAlbumData(res.data.data));
             dispatch(setPlaylistQueue(res.data.data.song.items));
         }
-        fetchAlbumData();
-    }, [dispatch, id]);
-    if (!albumData) return null;
+        if (albumData.encodeId !== id) fetchAlbumData();
+    }, [albumData.encodeId, dispatch, id]);
+    if (!albumData.encodeId || albumData.encodeId !== id) return null;
     return (
         <>
             <div className="flex items-start gap-x-10">

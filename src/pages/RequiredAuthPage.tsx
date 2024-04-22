@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/configureStore";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth-context";
 
 const RequiredAuthPage = ({ children }: { children: React.ReactNode }) => {
-    const user = useSelector((state: RootState) => state.auth.user);
     const navigate = useNavigate();
+    const { userInfo } = useAuth() || {};
 
     useEffect(() => {
-        if (!user) {
+        if (!userInfo || !userInfo.email) {
             navigate("/login");
         }
-    }, [navigate, user]);
+    }, [navigate, userInfo]);
 
     return <>{children}</>;
 };

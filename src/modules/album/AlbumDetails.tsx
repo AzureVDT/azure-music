@@ -9,6 +9,7 @@ const AlbumDetails = ({
     albumData: AlbumTypes;
     navigate: (link: string) => void;
 }) => {
+    if (!albumData) return null;
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="w-[300px] h-[300px] rounded-lg mb-5">

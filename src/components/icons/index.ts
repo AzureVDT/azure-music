@@ -27,6 +27,8 @@ import IconAdd from "./IconAdd";
 import IconDelete from "./IconDelete";
 import IconDownload from "./IconDownload";
 import IconEyeToggle from "./IconEyeToggle";
+import IconArrowLeft from "./IconArrowLeft";
+import IconArrowRight from "./IconArrowRight";
 export {
     IconLogout,
     IconLibrary,
@@ -57,4 +59,6 @@ export {
     IconDelete,
     IconDownload,
     IconEyeToggle,
+    IconArrowLeft,
+    IconArrowRight,
 };
