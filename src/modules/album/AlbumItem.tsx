@@ -6,6 +6,7 @@ import {
     setAlbumData,
     setIsPremium,
     setPlayerData,
+    setPlaylistQueue,
     setShowBottomPlayer,
     setShowPlaylist,
     setShowRecentlyPlayed,
@@ -18,6 +19,8 @@ import {
     IconPremium,
 } from "../../components/icons";
 import AlbumTypes from "../../types/albumTypes";
+import { RootState } from "../../store/configureStore";
+import { useSelector } from "react-redux";
 type AlbumItemProps = {
     item: NewReleaseSongTypes;
     navigate: (link: string) => void;
@@ -31,6 +34,7 @@ const AlbumItem = React.memo(({ item, navigate }: AlbumItemProps) => {
         () => formatDuration(item.duration),
         [item.duration]
     );
+    const albumData = useSelector((state: RootState) => state.music.albumData);
     const handlePlay = () => {
         dispatch(setPlayerData(item));
         dispatch(setShowBottomPlayer(true));
@@ -39,6 +43,7 @@ const AlbumItem = React.memo(({ item, navigate }: AlbumItemProps) => {
         item.streamingStatus === 2
             ? dispatch(setIsPremium(true))
             : dispatch(setIsPremium(false));
+        dispatch(setPlaylistQueue(albumData.song.items));
     };
 
     const link = item.album?.link.split(".html")[0];

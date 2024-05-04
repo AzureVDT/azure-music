@@ -28,14 +28,14 @@ const DashboardTopBar = () => {
                     <button
                         className={!prevPath ? "text-text2" : ""}
                         disabled={!prevPath}
-                        onClick={() => navigate}
+                        // onClick={() => navigate}
                     >
                         <IconArrowLeft />
                     </button>
                     <button
                         className={!nextPath ? "text-text2" : ""}
                         disabled={!nextPath}
-                        onClick={() => navigate}
+                        // onClick={() => navigate}
                     >
                         <IconArrowRight />
                     </button>

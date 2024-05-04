@@ -13,19 +13,19 @@ import { v4 as uuidv4 } from "uuid";
 import {
     setIsPremium,
     setPlayerData,
+    setPlaylistQueue,
     setShowBottomPlayer,
     setShowPlaylist,
     setShowRecentlyPlayed,
 } from "../../store/actions/musicSlice";
 import { useDispatch } from "react-redux";
-import { setPlayListQueueTemp } from "../../store/actions/commonSlice";
 
 const NewRelease = ({ data }: { data: NewReleaseTypes }) => {
     const [type, setType] = useState("all");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPlayListQueueTemp(data.items.all));
+        dispatch(setPlaylistQueue(data.items.all));
     }, [data, dispatch]);
     if (!data) return null;
     return (

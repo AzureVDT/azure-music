@@ -16,6 +16,10 @@ export default function useStreamingUrl(data: NewReleaseSongTypes) {
                 );
                 if (res.data.msg === "Success") {
                     setAudioUrl(res.data.data[128]);
+                } else {
+                    setAudioUrl(
+                        `http://api.mp3.zing.vn/api/streaming/audio/${data?.encodeId}/320`
+                    );
                 }
                 setLoading(false);
             }
@@ -23,5 +27,5 @@ export default function useStreamingUrl(data: NewReleaseSongTypes) {
         fetchAudioUrl();
     }, [data]);
 
-    return { audioUrl, loading };
+    return { audioUrl, loading, setAudioUrl };
 }

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/configureStore";
 import { IconPlay, IconPremium } from "../../components/icons";
 import { NewReleaseSongTypes } from "../../types/newReleaseTypes";
+import { setCurrentProgress } from "../../store/actions/playerSlice";
 
 const DashboardQueueItem = ({
     item,
@@ -24,6 +25,7 @@ const DashboardQueueItem = ({
     const isActive = item.encodeId === id && !isRecentPlaylist;
     const handlePlaySong = () => {
         dispatch(setPlayerData(item));
+        dispatch(setCurrentProgress(0));
         saveSongIntoRecentPlaylist(item);
         if (isRecentPlaylist) {
             const isExist = playlistQueue?.find(
